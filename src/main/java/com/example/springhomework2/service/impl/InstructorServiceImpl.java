@@ -8,12 +8,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 public class InstructorServiceImpl implements InstructorService {
-    private InstructorRepository instructorRepository;
+    private final InstructorRepository instructorRepository;
+
     public InstructorServiceImpl(InstructorRepository instructorRepository) {
         this.instructorRepository = instructorRepository;
     }
+
     @Override
     public List<Instructor> getAllInstructors() {
         return instructorRepository.getAllInstructors();
@@ -36,6 +39,6 @@ public class InstructorServiceImpl implements InstructorService {
 
     @Override
     public Instructor updateInstructor(Integer id, InstructorRequest instructorRequest) {
-        return instructorRepository.updateInstructor(id,instructorRequest);
+        return instructorRepository.updateInstructor(id, instructorRequest);
     }
 }

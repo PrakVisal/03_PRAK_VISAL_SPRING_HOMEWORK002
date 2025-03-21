@@ -7,12 +7,15 @@ import com.example.springhomework2.service.CourseService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 public class CourseServiceImpl implements CourseService {
     private final CourseRepository courseRepository;
+
     public CourseServiceImpl(CourseRepository courseRepository) {
         this.courseRepository = courseRepository;
     }
+
     @Override
     public List<Course> getAllCourses() {
         return courseRepository.getAllCourse();
@@ -35,6 +38,6 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Course updateCourse(Integer id, CourseRequest courseRequest) {
-        return courseRepository.updateCourse(id,courseRequest);
+        return courseRepository.updateCourse(id, courseRequest);
     }
 }

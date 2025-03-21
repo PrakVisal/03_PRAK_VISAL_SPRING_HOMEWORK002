@@ -4,6 +4,7 @@ import com.example.springhomework2.model.dto.request.CourseRequest;
 import com.example.springhomework2.model.dto.response.ApiResponse;
 import com.example.springhomework2.model.entity.Course;
 import com.example.springhomework2.service.CourseService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,9 +16,12 @@ import java.util.List;
 @RequestMapping("/api/v1/course")
 public class CourseController {
     private final CourseService courseService;
+
     public CourseController(CourseService courseService) {
         this.courseService = courseService;
     }
+
+    @Operation(summary = "Get all Courses")
     @GetMapping()
     public ResponseEntity<ApiResponse<List<Course>>> getAllCourses() {
         ApiResponse<List<Course>> response = ApiResponse.<List<Course>>builder()
@@ -27,9 +31,10 @@ public class CourseController {
                 .payload(courseService.getAllCourses())
                 .timestamp(LocalDateTime.now())
                 .build();
-        return new ResponseEntity<>(response,HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Operation(summary = "Insert a Course")
     @PostMapping
     public ResponseEntity<ApiResponse<Course>> insertCourse(@RequestBody CourseRequest courseRequest) {
         ApiResponse<Course> response = ApiResponse.<Course>builder()
@@ -39,9 +44,10 @@ public class CourseController {
                 .payload(courseService.insertCourse(courseRequest))
                 .timestamp(LocalDateTime.now())
                 .build();
-        return new ResponseEntity<>(response,HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Operation(summary = "Get Courses by ID")
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<Course>> getCourseById(@PathVariable Integer id) {
         ApiResponse<Course> response = ApiResponse.<Course>builder()
@@ -51,9 +57,10 @@ public class CourseController {
                 .payload(courseService.getCourseById(id))
                 .timestamp(LocalDateTime.now())
                 .build();
-        return new ResponseEntity<>(response,HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Operation(summary = "Delete a Course")
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Course>> deleteCourse(@PathVariable Integer id) {
         ApiResponse<Course> response = ApiResponse.<Course>builder()
@@ -63,19 +70,20 @@ public class CourseController {
                 .payload(courseService.deleteCourse(id))
                 .timestamp(LocalDateTime.now())
                 .build();
-        return new ResponseEntity<>(response,HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Operation(summary = "Update a Course")
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<Course>> updateCourse(@PathVariable Integer id, @RequestBody CourseRequest courseRequest) {
         ApiResponse<Course> response = ApiResponse.<Course>builder()
                 .success(true)
                 .message("Updated course successfully")
                 .status(HttpStatus.OK)
-                .payload(courseService.updateCourse(id,courseRequest))
+                .payload(courseService.updateCourse(id, courseRequest))
                 .timestamp(LocalDateTime.now())
                 .build();
-        return new ResponseEntity<>(response,HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 }
