@@ -53,4 +53,9 @@ public interface CourseRepository {
             """)
     @ResultMap("courseMapper")
     List<Course> getAllCourseByStudentId(Integer studentId);
+
+    @Insert("""
+            INSERT INTO student_course(student_id,course_id) VALUES (#{studentId},#{courseId})
+            """)
+    void insertStudentIdAndCourseId(Integer studentId, Integer courseId);
 }

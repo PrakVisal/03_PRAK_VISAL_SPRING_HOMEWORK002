@@ -6,7 +6,7 @@ import com.example.springhomework2.model.entity.Student;
 import java.util.List;
 
 public interface StudentService {
-    List<Student> getAllStudent();
+    List<Student> getAllStudent(Integer page, Integer pageSize);
 
     Student insertStudent(StudentRequest studentRequest);
 

@@ -2,6 +2,7 @@ package com.example.springhomework2.service.impl;
 
 import com.example.springhomework2.model.dto.request.StudentRequest;
 import com.example.springhomework2.model.entity.Student;
+import com.example.springhomework2.repository.CourseRepository;
 import com.example.springhomework2.repository.StudentRepository;
 import com.example.springhomework2.service.StudentService;
 import org.springframework.stereotype.Service;
@@ -10,20 +11,27 @@ import java.util.List;
 
 @Service
 public class StudentServiceImpl implements StudentService {
-    StudentRepository studentRepository;
+    private final StudentRepository studentRepository;
+    private final CourseRepository courseRepository;
 
-    public StudentServiceImpl(StudentRepository studentRepository) {
+    public StudentServiceImpl(StudentRepository studentRepository, CourseRepository courseRepository) {
         this.studentRepository = studentRepository;
+        this.courseRepository = courseRepository;
     }
 
     @Override
-    public List<Student> getAllStudent() {
-        return studentRepository.getAllStudent();
+    public List<Student> getAllStudent(Integer page, Integer pageSize) {
+        return studentRepository.getAllStudent(page, pageSize);
     }
 
     @Override
     public Student insertStudent(StudentRequest studentRequest) {
-        return studentRepository.insertStudent(studentRequest);
+        System.out.println(studentRequest.getCourseId());
+        Student student = studentRepository.insertStudent(studentRequest);
+        for(Integer courseId : studentRequest.getCourseId()){
+            courseRepository.insertStudentIdAndCourseId(student.getId(), courseId);
+        }
+        return studentRepository.getStudentById(student.getId());
     }
 
     @Override

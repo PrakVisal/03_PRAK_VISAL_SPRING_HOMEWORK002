@@ -23,12 +23,12 @@ public class StudentController {
 
     @Operation(summary = "Get all Students")
     @GetMapping
-    public ResponseEntity<ApiResponse<List<Student>>> getAllStudent() {
+    public ResponseEntity<ApiResponse<List<Student>>> getAllStudent(@RequestParam(defaultValue = "1") Integer page,@RequestParam(defaultValue = "10") Integer pageSize) {
         ApiResponse<List<Student>> response = ApiResponse.<List<Student>>builder()
                 .success(true)
                 .message("Get all Students Successfully")
                 .status(HttpStatus.OK)
-                .payload(studentService.getAllStudent())
+                .payload(studentService.getAllStudent(page,pageSize))
                 .timestamp(LocalDateTime.now())
                 .build();
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -36,8 +36,16 @@ public class StudentController {
 
     @Operation(summary = "Add a Student still developing...")
     @PostMapping
-    public Student insertStudent(@RequestBody StudentRequest studentRequest) {
-        return studentService.insertStudent(studentRequest);
+    public ResponseEntity<ApiResponse<Student>> insertStudent(@RequestBody StudentRequest studentRequest) {
+        System.out.println(studentRequest);
+        ApiResponse<Student> res = ApiResponse.<Student>builder()
+                .success(true)
+                .message("Inserted Student Successfully")
+                .status(HttpStatus.OK)
+                .payload(studentService.insertStudent(studentRequest))
+                .timestamp(LocalDateTime.now())
+                .build();
+        return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
     @Operation(summary = "Get Student by ID")
