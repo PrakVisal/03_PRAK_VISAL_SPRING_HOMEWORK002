@@ -58,4 +58,9 @@ public interface CourseRepository {
             INSERT INTO student_course(student_id,course_id) VALUES (#{studentId},#{courseId})
             """)
     void insertStudentIdAndCourseId(Integer studentId, Integer courseId);
+
+    @Select("""
+            DELETE FROM student_course WHERE student_id = #{studentId}
+            """)
+    void deleteStudentCourseByStudentId(Integer studentId);
 }

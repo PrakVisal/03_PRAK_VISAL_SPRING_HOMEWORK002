@@ -19,14 +19,14 @@ public interface StudentRepository {
             @Result(property = "phone", column = "phone_number"),
             @Result(property = "courses", column = "student_id", many = @Many(select = "com.example.springhomework2.repository.CourseRepository.getAllCourseByStudentId"))
     })
-    List<Student> getAllStudent(Integer page,Integer pageSize);
+    List<Student> getAllStudent(Integer page, Integer pageSize);
 
     @Select("""
             INSERT INTO students(student_name,email,phone_number)
             VALUES (#{request.name}, #{request.email}, #{request.phone}) RETURNING *
             """)
     @ResultMap("studentMapper")
-    @Result(property = "courseId", column = "course_id", many =  @Many(select = "com.example.springhomework2.repository.CourseRepository.getCourseById"))
+    @Result(property = "courseId", column = "course_id", many = @Many(select = "com.example.springhomework2.repository.CourseRepository.getCourseById"))
     Student insertStudent(@Param("request") StudentRequest studentRequest);
 
     @Select("""
@@ -40,4 +40,11 @@ public interface StudentRepository {
             """)
     @ResultMap("studentMapper")
     Student deleteStudent(Integer id);
+
+    @Select("""
+            UPDATE students SET student_name = #{request.name},email = #{request.email},phone_number = #{request.phone} WHERE student_id = #{id} RETURNING *
+            """)
+    @ResultMap("studentMapper")
+    @Result(property = "courseId", column = "course_id", many = @Many(select = "com.example.springhomework2.repository.CourseRepository.getCourseById"))
+    Student updateStudent(Integer id, @Param("request") StudentRequest studentRequest);
 }

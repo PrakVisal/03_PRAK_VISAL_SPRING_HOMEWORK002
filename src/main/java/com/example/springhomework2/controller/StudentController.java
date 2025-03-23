@@ -23,18 +23,18 @@ public class StudentController {
 
     @Operation(summary = "Get all Students")
     @GetMapping
-    public ResponseEntity<ApiResponse<List<Student>>> getAllStudent(@RequestParam(defaultValue = "1") Integer page,@RequestParam(defaultValue = "10") Integer pageSize) {
+    public ResponseEntity<ApiResponse<List<Student>>> getAllStudent(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer pageSize) {
         ApiResponse<List<Student>> response = ApiResponse.<List<Student>>builder()
                 .success(true)
                 .message("Get all Students Successfully")
                 .status(HttpStatus.OK)
-                .payload(studentService.getAllStudent(page,pageSize))
+                .payload(studentService.getAllStudent(page, pageSize))
                 .timestamp(LocalDateTime.now())
                 .build();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @Operation(summary = "Add a Student still developing...")
+    @Operation(summary = "Add a Student")
     @PostMapping
     public ResponseEntity<ApiResponse<Student>> insertStudent(@RequestBody StudentRequest studentRequest) {
         System.out.println(studentRequest);
@@ -61,8 +61,14 @@ public class StudentController {
     }
 
     @Operation(summary = "Update a Student still developing...")
-    @PutMapping
-    public Student updateStudent(@RequestBody StudentRequest studentRequest) {
-        return null;
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResponse<Student>> updateStudent(@PathVariable Integer id, @RequestBody StudentRequest studentRequest) {
+        ApiResponse<Student> response = ApiResponse.<Student>builder()
+                .success(true)
+                .message("Updated Student Successfully")
+                .status(HttpStatus.OK)
+                .payload(studentService.updateStudent(id, studentRequest))
+                .timestamp(LocalDateTime.now()).build();
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

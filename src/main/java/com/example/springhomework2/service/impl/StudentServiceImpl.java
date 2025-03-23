@@ -26,7 +26,6 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Student insertStudent(StudentRequest studentRequest) {
-        System.out.println(studentRequest.getCourseId());
         Student student = studentRepository.insertStudent(studentRequest);
         for(Integer courseId : studentRequest.getCourseId()){
             courseRepository.insertStudentIdAndCourseId(student.getId(), courseId);
@@ -42,5 +41,15 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Student deleteStudent(Integer id) {
         return studentRepository.deleteStudent(id);
+    }
+
+    @Override
+    public Student updateStudent(Integer id, StudentRequest studentRequest) {
+        Student student = studentRepository.updateStudent(id, studentRequest);
+        courseRepository.deleteStudentCourseByStudentId(student.getId());
+        for(Integer courseId : studentRequest.getCourseId()){
+            courseRepository.insertStudentIdAndCourseId(student.getId(), courseId);
+        }
+        return studentRepository.updateStudent(student.getId(), studentRequest);
     }
 }
